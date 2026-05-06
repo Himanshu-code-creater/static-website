@@ -25,10 +25,12 @@ pipeline {
         stage('Test') {
             steps {
                 sh '''
-                docker run -d -p 8081:80 --name test-container $IMAGE_NAME:$TAG
-                sleep 5
-                curl -f http://localhost:8081
-                docker rm -f test-container
+                    docker run -d -p 8081:80 --name test-container nginx:latest
+                    sleep 5
+                    CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' test-container)
+                    curl -f http://$CONTAINER_IP:80
+                    docker stop test-container
+                    docker rm test-container
                 '''
             }
         }
