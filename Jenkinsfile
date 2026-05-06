@@ -11,7 +11,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: '*/main',
+                git branch: 'main',
                 git 'https://github.com/Himanshu-code-creater/static-website.git'
             }
         }
